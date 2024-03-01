@@ -1,0 +1,2 @@
+Match strings with wildcard.
+
