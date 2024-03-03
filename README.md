@@ -5,6 +5,6 @@ A very simple package that implements **wildcard** matching. Don't expect it to 
 ## Quick Start
 
 ```c#
-new Wildcard("Does * work\\?").IsMatch("Does it work?");
+bool match = new Wildcard("Does * work\\?").IsMatch("Does it work?"); // True
 ```
 
