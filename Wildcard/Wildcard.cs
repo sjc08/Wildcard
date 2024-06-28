@@ -1,37 +1,29 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Asjc.Wildcard
 {
-    public class Wildcard
+    public class Wildcard : Regex
     {
-        public Wildcard(string pattern)
-        {
-            Pattern = pattern;
-            EquivalentRegex = ToRegex(pattern);
-        }
+        private new readonly string pattern;
 
-        public string Pattern { get; }
-        public Regex EquivalentRegex { get; }
+        public Wildcard(string pattern) : base(ToRegex(pattern)) => this.pattern = pattern;
 
-        public bool IsMatch(string input)
-            => EquivalentRegex.IsMatch(input);
+        public Wildcard(string pattern, RegexOptions options) : base(ToRegex(pattern), options) => this.pattern = pattern;
 
-        public static bool IsMatch(string input, string pattern)
-            => new Wildcard(pattern).IsMatch(input);
+        public Wildcard(string pattern, RegexOptions options, TimeSpan matchTimeout) : base(ToRegex(pattern), options, matchTimeout) => this.pattern = pattern;
 
-        public static Regex ToRegex(string pattern)
+        public static string ToRegex(string pattern)
         {
             var sb = new StringBuilder();
             bool escaping = false;
-
             sb.Append("^");
-
             foreach (var c in pattern)
             {
                 if (escaping)
                 {
-                    sb.Append(Regex.Escape(c.ToString()));
+                    sb.Append(Escape(c.ToString()));
                     escaping = false;
                 }
                 else
@@ -48,17 +40,21 @@ namespace Asjc.Wildcard
                             sb.Append(".");
                             break;
                         default:
-                            sb.Append(Regex.Escape(c.ToString()));
+                            sb.Append(Escape(c.ToString()));
                             break;
                     }
                 }
             }
-
             sb.Append("$");
-
-            return new Regex(sb.ToString());
+            return sb.ToString();
         }
 
-        public override string ToString() => Pattern;
+        public static new bool IsMatch(string input, string pattern) => Regex.IsMatch(input, ToRegex(pattern));
+
+        public static new bool IsMatch(string input, string pattern, RegexOptions options) => Regex.IsMatch(input, ToRegex(pattern), options);
+
+        public static new bool IsMatch(string input, string pattern, RegexOptions options, TimeSpan matchTimeout) => Regex.IsMatch(input, ToRegex(pattern), options, matchTimeout);
+
+        public new string ToString() => pattern;
     }
 }
