@@ -12,15 +12,15 @@ namespace Asjc.Wildcard
         }
 
         public string Pattern { get; }
-        public string EquivalentRegex { get; }
+        public Regex EquivalentRegex { get; }
 
         public bool IsMatch(string input)
-            => Regex.IsMatch(input, EquivalentRegex);
+            => EquivalentRegex.IsMatch(input);
 
         public static bool IsMatch(string input, string pattern)
             => new Wildcard(pattern).IsMatch(input);
 
-        public static string ToRegex(string pattern)
+        public static Regex ToRegex(string pattern)
         {
             var sb = new StringBuilder();
             bool escaping = false;
@@ -56,7 +56,7 @@ namespace Asjc.Wildcard
 
             sb.Append("$");
 
-            return sb.ToString();
+            return new Regex(sb.ToString());
         }
 
         public override string ToString() => Pattern;
