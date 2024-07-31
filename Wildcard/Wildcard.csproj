@@ -2,8 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <Version>1.1.0</Version>
-    <Description>Match strings with wildcard</Description>
+    <Authors>AlexSJC</Authors>
+    <Description>Match strings with wildcard.</Description>
+    <Copyright>Copyright © $(Authors) $([System.DateTime]::Now.Year)</Copyright>
     <PackageIcon>Icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/SJC08/Wildcard</RepositoryUrl>
